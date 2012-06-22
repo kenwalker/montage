@@ -532,9 +532,10 @@ var TranslateComposer = exports.TranslateComposer = Montage.create(Composer,/** 
                 if (this.axis !== "both") {
                     this._analyzeMovement(event);
                 } else {
-                    this._stealPointer();
-                    event.preventDefault();
-                    this._move(event.clientX, event.clientY);
+                    if (this._stealPointer()) {
+                        event.preventDefault();
+                        this._move(event.clientX, event.clientY);
+                    }
                 }
             }
 
@@ -691,7 +692,7 @@ var TranslateComposer = exports.TranslateComposer = Montage.create(Composer,/** 
 
     _stealPointer: {
         value: function() {
-            this.eventManager.claimPointer(this._observedPointer, this);
+            return this.eventManager.claimPointer(this._observedPointer, this);
         }
     },
 
